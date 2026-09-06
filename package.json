@@ -4,7 +4,9 @@
   "private": true,
   "description": "Devcontainer base image for agent-assisted development",
   "scripts": {
-    "release": "commit-and-tag-version"
+    "release": "commit-and-tag-version",
+    "release:minor": "commit-and-tag-version --release-as minor",
+    "release:manual": "commit-and-tag-version --release-as minor --skip.commit --skip.tag"
   },
   "devDependencies": {
     "commit-and-tag-version": "^13.1.2"
