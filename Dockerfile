@@ -60,6 +60,9 @@ RUN KIND_VERSION="v0.24.0" && \
         "https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-${TARGETARCH}" && \
     sudo chmod +x /usr/local/bin/kind
 
+# zsh — already installed in the base image but not the node user's default shell.
+RUN sudo chsh -s /usr/bin/zsh node
+
 # ---- Sanity check at build time --------------------------------------------
 RUN jq --version && \
     yq --version && \
