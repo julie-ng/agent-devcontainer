@@ -24,6 +24,8 @@ jobs:
         docker.io/julieio/agent-devcontainer
       meta-tags: |
         type=ref,event=branch
+        type=ref,event=tag
+        type=match,pattern=(v\d+)\.\d+,group=1
         type=semver,pattern={{version}}
     secrets:
       registry-auths: |
