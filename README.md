@@ -1,8 +1,8 @@
 # agent-devcontainer
 
-A devcontainer base image for agent-assisted development. Coding agents (e.g. Claude Code) run through the IDE, not inside this image — this just provides the OS tooling a devcontainer needs.
+A devcontainer base image for agent-assisted development. Coding agents (e.g. Claude Code) run through the IDE, not inside this image — this `docker.io/julieio/agent-devcontainer` just provides the OS tooling a devcontainer needs.
 
-## What's in it
+## Included Tools
 
 | Tool | Why |
 |---|---|
@@ -17,7 +17,53 @@ A devcontainer base image for agent-assisted development. Coding agents (e.g. Cl
 
 Base image: `mcr.microsoft.com/devcontainers/javascript-node:22`, for devcontainer-spec compatibility (non-root `node` user, sudo, features).
 
-**Deliberately excluded:** `sbx`, gVisor/Kata, cloud provider CLIs.
+### Python
+
+Python is **not** baked into the image. It's added declaratively via the official `ghcr.io/devcontainers/features/python:1` feature in `devcontainer.json` (pinned to `3.12`), keeping the version visible and diffable in `devcontainer.json` rather than buried in a Dockerfile `RUN` step.
+
+## Example `devcontainer.json`
+
+Copy [`devcontainer.sample.json`](./.devcontainer/devcontainer.sample.json) to your project's `.devcontainer/devcontainer.json` and adjust paths/mounts as needed.
+
+```json
+{
+  "name": "Agent Devcontainer",
+  "image": "docker.io/julieio/agent-devcontainer:latest",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/Users/<user>/path/to/project,type=bind,consistency=cached",
+  "workspaceFolder": "/Users/<user>/path/to/project",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.claude,target=/home/node/.claude,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": "npm install",
+  "dotfiles": {
+    "repository": "https://github.com/<USERNAME>/dotfiles.git",
+    "targetPath": "~/dotfiles",
+    "installCommand": "~/dotfiles/setup.sh"
+  }
+}
+```
+
+### Claude Code Setup
+
+The `agent-devcontainer` itself is agnostic. But the `devcontainer.json` file contains Claude code specific setup.
+
+#### Map this project's memories
+
+In order for Claude to pull the project specific memories, the container needs to work in a directory path that matches the host path:
+
+| | Path |
+|---|---|
+| Project Path | `/Users/alice/workspace/my-project` |
+| Claude memory path | `~/.claude/projects/-Users-alice-workspace-my-project` |
+
+#### Mount all memories
+
+Mounting `~/.claude` carries over its config into the container and _memorials from **all** claude projects_.  This intentional I can ask Claude to check how project X handled problem Y, etc.
 
 ## Build & publish
 
@@ -34,23 +80,6 @@ To test locally before pushing:
 docker buildx build --platform linux/arm64 -t julieio/agent-devcontainer:test --load .
 docker run --rm -it julieio/agent-devcontainer:test bash
 ```
-
-## Python
-
-Python is **not** baked into the image. It's added declaratively via the official `ghcr.io/devcontainers/features/python:1` feature in `devcontainer.json` (pinned to `3.12`), keeping the version visible and diffable in `devcontainer.json` rather than buried in a Dockerfile `RUN` step.
-
-## Using image in `devcontainer.json`
-
-### Copy sample file
-
-Copy `devcontainer.sample.json` to your project's `.devcontainer/devcontainer.json` 
-
-### Adjust paths/mounts to load Claude memories
-
-- Mounting `~/.claude` carries over its config into the container.
-- Adjusting `workspaceMount` / `workspaceFolder` allow for local mapping to  memories folder via Claude naming conventions.
-
-
 
 ## Maintenance notes
 
