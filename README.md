@@ -2,6 +2,9 @@
 
 A devcontainer base image for agent-assisted development. Coding agents (e.g. Claude Code) run through the IDE, not inside this image — this `docker.io/julieio/agent-devcontainer` just provides the OS tooling a devcontainer needs.
 
+> [!IMPORTANT] 
+> This is **very large image at 8.5GB** due to the [Mermaid CLI](https://www.npmjs.com/package/@mermaid-js/mermaid-cli) dependency that Claude Code needs to verify the mermaid code it generates. This is a known issue and because the container is only for me, I will move `mmdc` to `devcontainer.json` at later time.
+
 ## Included Tools
 
 | Tool | Why |
