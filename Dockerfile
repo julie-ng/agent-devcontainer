@@ -11,6 +11,8 @@
 #   - Python is deliberately not baked in here; added via the
 #     ghcr.io/devcontainers/features/python feature in devcontainer.json to
 #     keep the version pin visible there instead of in a RUN step.
+#   - mmdc (mermaid-cli) needs a real Chromium (Puppeteer), hence the extra
+#     apt packages right before its npm install.
 
 FROM mcr.microsoft.com/devcontainers/javascript-node:22
 
@@ -60,6 +62,30 @@ RUN KIND_VERSION="v0.24.0" && \
         "https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-${TARGETARCH}" && \
     sudo chmod +x /usr/local/bin/kind
 
+# Chromium deps for mermaid-cli's bundled Puppeteer browser.
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+        ca-certificates \
+        fonts-liberation \
+        libasound2 \
+        libatk-bridge2.0-0 \
+        libatk1.0-0 \
+        libcups2 \
+        libdrm2 \
+        libgbm1 \
+        libgtk-3-0 \
+        libnspr4 \
+        libnss3 \
+        libxcomposite1 \
+        libxdamage1 \
+        libxfixes3 \
+        libxkbcommon0 \
+        libxrandr2 \
+        xdg-utils \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+# mermaid-cli — check/render mermaid diagram syntax (mmdc).
+RUN sudo npm install -g @mermaid-js/mermaid-cli
+
 # zsh — already installed in the base image but not the node user's default shell.
 RUN sudo chsh -s /usr/bin/zsh node
 
@@ -68,7 +94,8 @@ RUN jq --version && \
     yq --version && \
     gh --version && \
     kubectl version --client && \
-    kind version
+    kind version && \
+    mmdc --version
 
 # Fallback only — devcontainer.json's workspaceFolder overrides this in practice.
 WORKDIR /workspace
