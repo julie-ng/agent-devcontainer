@@ -1,0 +1,15 @@
+{
+  "tagPrefix": "v",
+  "types": [
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "image", "section": "Image Changes" },
+    { "type": "cicd", "section": "CI/CD" },
+    { "type": "workflow", "section": "CI/CD" },
+    { "type": "deps", "section": "Dependencies" },
+    { "type": "chore", "hidden": true },
+    { "type": "docs", "hidden": true },
+    { "type": "refactor", "hidden": true },
+    { "type": "test", "hidden": true }
+  ]
+}
