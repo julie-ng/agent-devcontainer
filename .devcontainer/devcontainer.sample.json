@@ -11,5 +11,10 @@
   "mounts": [
     "source=${localEnv:HOME}/.claude,target=/home/node/.claude,type=bind,consistency=cached"
   ],
-  "postCreateCommand": "npm install"
+  "postCreateCommand": "npm install",
+  "dotfiles": {
+    "repository": "https://github.com/<USERNAME>/dotfiles.git",
+    "targetPath": "~/dotfiles",
+    "installCommand": "~/dotfiles/setup.sh"
+  }
 }
