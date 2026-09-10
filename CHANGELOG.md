@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.0](https://github.com/julie-ng/agent-devcontainer/compare/v0.2.0...v0.3.0) (2026-09-10)
+
+### Features
+
+* **image:** add typescript ([a014622](https://github.com/julie-ng/agent-devcontainer/commit/a0146228c6a8734812d46ed61532bdc4d52656b8))
 ## [0.2.0](https://github.com/julie-ng/agent-devcontainer/compare/v0.1.0...v0.2.0) (2026-09-08)
 
 ### Features
