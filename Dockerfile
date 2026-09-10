@@ -64,6 +64,10 @@ RUN KIND_VERSION="v0.24.0" && \
         "https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-${TARGETARCH}" && \
     sudo chmod +x /usr/local/bin/kind
 
+# TypeScript — global tsc, since agents type-check/compile across many repos
+# rather than each one owning its own dev dependency.
+RUN sudo npm install -g typescript
+
 # zsh — already installed in the base image but not the node user's default shell.
 RUN sudo chsh -s /usr/bin/zsh node
 
@@ -72,7 +76,8 @@ RUN jq --version && \
     yq --version && \
     gh --version && \
     kubectl version --client && \
-    kind version
+    kind version && \
+    tsc --version
 
 # Fallback only — devcontainer.json's workspaceFolder overrides this in practice.
 WORKDIR /workspace
