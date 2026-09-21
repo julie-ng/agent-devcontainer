@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.4.0](https://github.com/julie-ng/agent-devcontainer/compare/v0.3.0...v0.4.0) (2026-09-21)
+
+### Features
+
+* **image:** add gitlab cli ([31c0fd1](https://github.com/julie-ng/agent-devcontainer/commit/31c0fd11ff945ee543a42519982295528aed6e4c))
 ## [0.3.0](https://github.com/julie-ng/agent-devcontainer/compare/v0.2.0...v0.3.0) (2026-09-10)
 
 ### Features
